@@ -166,7 +166,7 @@ def login():
         con = db()
         cur = con.cursor()
         cur.execute(
-            "SELECT * FROM users WHERE username=%s AND password=%s",
+            "SELECT * FROM users WHERE username=? AND password=?",
             (username, password)
         )
         data = cur.fetchone()
