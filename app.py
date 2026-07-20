@@ -659,7 +659,7 @@ def admin_delete_all_history():
 
     flash("All history deleted by admin")
     return redirect("/all_history")  
-"""
+
 if __name__ == "__main__":
     app.run(debug=True)
 
