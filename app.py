@@ -446,7 +446,7 @@ def predict():
             con = db()
             cur = con.cursor()
             cur.execute(
-                "INSERT INTO history(username,text,prediction,admin_action) VALUES(%s,%s,%s,%s)",
+                "INSERT INTO history(username,text,prediction,admin_action) VALUES(?,?,?,?)",
                 (session["user"], text, pred, "pending")
             )
             con.commit()
@@ -471,7 +471,7 @@ def history():
     cur.execute("""
         SELECT id, username, text, prediction, admin_action
         FROM history
-        WHERE username=%s
+        WHERE username=?
         ORDER BY id DESC
     """, (session["user"],))
     data = cur.fetchall()
@@ -520,13 +520,11 @@ def review_predictions():
 
     con = db()
     cur = con.cursor()
-    cur.execute("""
-        SELECT h.id, h.username, h.text, h.prediction, h.admin_action,
+    cur.execute("""SELECT h.id, h.username, h.text, h.prediction, h.admin_action,
                u.status, u.warning_count
         FROM history h
         JOIN users u ON h.username = u.username
-        ORDER BY h.id DESC
-    """)
+        ORDER BY h.id DESC""")
     data = cur.fetchall()
     con.close()
 
@@ -542,16 +540,16 @@ def give_warning(history_id, username):
     con = db()
     cur = con.cursor()
 
-    cur.execute("SELECT * FROM history WHERE id=%s", (history_id,))
+    cur.execute("SELECT * FROM history WHERE id=?", (history_id,))
     row = cur.fetchone()
 
     if row and row["prediction"] == "hate" and row["admin_action"] == "pending":
         cur.execute(
-            "UPDATE users SET warning_count = warning_count + 1 WHERE username=%s",
+            "UPDATE users SET warning_count = warning_count + 1 WHERE username=?",
             (username,)
         )
         cur.execute(
-            "UPDATE history SET admin_action=%s WHERE id=%s",
+            "UPDATE history SET admin_action=? WHERE id=?",
             ("warned", history_id)
         )
         con.commit()
@@ -572,16 +570,16 @@ def block_user(history_id, username):
     con = db()
     cur = con.cursor()
 
-    cur.execute("SELECT * FROM history WHERE id=%s", (history_id,))
+    cur.execute("SELECT * FROM history WHERE id=?", (history_id,))
     row = cur.fetchone()
 
     if row and row["prediction"] == "offensive" and row["admin_action"] == "pending":
         cur.execute(
-            "UPDATE users SET status=%s WHERE username=%s",
+            "UPDATE users SET status=%s WHERE username=?",
             ("blocked", username)
         )
         cur.execute(
-            "UPDATE history SET admin_action=%s WHERE id=%s",
+            "UPDATE history SET admin_action=%s WHERE id=?",
             ("blocked", history_id)
         )
         con.commit()
@@ -602,7 +600,7 @@ def unblock_user(username):
     con = db()
     cur = con.cursor()
     cur.execute(
-        "UPDATE users SET status=%s WHERE username=%s",
+        "UPDATE users SET status=? WHERE username=?",
         ("active", username)
     )
     con.commit()
@@ -620,7 +618,7 @@ def delete_history(id):
     cur = con.cursor()
 
     cur.execute(
-        "DELETE FROM history WHERE id=%s AND username=%s",
+        "DELETE FROM history WHERE id=%s AND username=?",
         (id, session["user"])
     )
 
@@ -638,7 +636,7 @@ def admin_delete_history(id):
     con = db()
     cur = con.cursor()
 
-    cur.execute("DELETE FROM history WHERE id=%s", (id,))
+    cur.execute("DELETE FROM history WHERE id=?", (id,))
 
     con.commit()
     con.close()
