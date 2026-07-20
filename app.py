@@ -44,13 +44,17 @@ os.makedirs(GRAPH_FOLDER, exist_ok=True)
 
 # ---------------------- DATABASE CONNECTION ----------------------
 def db():
-    return pymysql.connect(
-        host="localhost",
-        user="root",
-        password="NewStrongPassword",
-        database="hate_speech_ai",
-        cursorclass=pymysql.cursors.DictCursor
-    )
+    con = sqlite3.connect("hate_speech_ai.db",check_same_thread=False)
+    con.row_factory = sqlite3.Row
+    return con
+with sqlite3.connect("hate_speech_ai.db")as conn:
+    conn.execute(""
+                 CREATE TABLE IF NOT EXISTS users(
+                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                 username TEXT UNIQUE NOT NULL,
+                 password TEXT NOT NULL
+                 )
+                 """)
 
 
 # ---------------------- HELPERS ----------------------
@@ -131,7 +135,7 @@ def register():
         con = db()
         cur = con.cursor()
 
-        cur.execute("SELECT * FROM users WHERE username=%s", (username,))
+        cur.execute("SELECT * FROM users WHERE username=?", (username,))
         existing = cur.fetchone()
 
         if existing:
@@ -140,7 +144,7 @@ def register():
             return redirect("/register")
 
         cur.execute(
-            "INSERT INTO users(username,password,email,mobile,address,status,warning_count) VALUES(%s,%s,%s,%s,%s,%s,%s)",
+            "INSERT INTO users(username,password,email,mobile,address,status,warning_count) VALUES (?,?,?,?,?,?,?)",
             (username, password, email, mobile, address, "active", 0)
         )
         con.commit()
