@@ -49,12 +49,17 @@ def db():
     return con
 with sqlite3.connect("hate_speech_ai.db")as conn:
     conn.execute("""
-                 CREATE TABLE IF NOT EXISTS users(
-                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                 username TEXT UNIQUE NOT NULL,
-                 password TEXT NOT NULL,
-                 )
-                 """)
+        CREATE TABLE IF NOT EXISTS users(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL
+            email TEXT,
+            mobile TEXT,
+            address TEXT,
+            status TEXT DEFAULT 'active',
+            warning_count INTEGER DEFAULT 0
+          )
+    """)
 
 
 # ---------------------- HELPERS ----------------------
