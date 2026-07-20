@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>User Prediction History</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+font-family:'Poppins',sans-serif;
+}
+
+body{
+min-height:100vh;
+margin:0;
+padding:30px;
+
+background:
+linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),
+url("https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=1600&q=80")
+center/cover no-repeat fixed;
+}
+
+/* container */
+
+.history-box{
+width:95%;
+margin:auto;
+background:rgba(255,255,255,0.12);
+backdrop-filter:blur(12px);
+border-radius:20px;
+padding:30px;
+color:white;
+box-shadow:0 10px 30px rgba(0,0,0,0.35);
+}
+
+/* title */
+
+.page-title{
+font-weight:700;
+margin-bottom:20px;
+}
+
+/* navigation buttons */
+
+.nav-links a{
+text-decoration:none;
+padding:10px 16px;
+border-radius:8px;
+margin-right:10px;
+background:#2563eb;
+color:white;
+display:inline-block;
+}
+
+.nav-links a:hover{
+background:#1d4ed8;
+}
+
+/* table */
+
+.table-box{
+background:rgb(129, 177, 225);
+border-radius:12px;
+overflow:hidden;
+margin-top:20px;
+}
+
+table{
+width:100%;
+}
+
+th{
+background:#2563eb;
+color:rgb(226, 221, 221);
+text-align:center;
+padding:12px;
+}
+
+td{
+padding:10px;
+text-align:center;
+}
+
+/* prediction badge */
+
+.prediction{
+padding:6px 10px;
+border-radius:15px;
+font-weight:600;
+}
+
+.hate{
+background:#fee2e2;
+color:#b91c1c;
+}
+
+.offensive{
+background:#fef3c7;
+color:#92400e;
+}
+
+.normal{
+background:#dcfce7;
+color:#166534;
+}
+
+/* admin action */
+
+.warn{
+color:#f59e0b;
+font-weight:600;
+}
+
+.block{
+color:#dc2626;
+font-weight:600;
+}
+
+.pending{
+color:#6b7280;
+font-weight:600;
+}
+
+/* delete button */
+
+.delete-btn{
+background:#dc2626;
+color:white;
+padding:6px 12px;
+border-radius:6px;
+text-decoration:none;
+}
+
+.delete-btn:hover{
+background:#b91c1c;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="history-box">
+
+<h2 class="page-title">
+<i class="bi bi-clock-history"></i> User Prediction History
+</h2>
+
+<div class="nav-links">
+<a href="/predict"><i class="bi bi-arrow-left-circle"></i> Back</a>
+<a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+</div>
+
+<div class="table-box">
+
+<table>
+
+<tr>
+<th>ID</th>
+<th>Username</th>
+<th>Text</th>
+<th>Prediction</th>
+<th>Admin Action</th>
+<th>Delete</th>
+</tr>
+
+{% for row in data %}
+
+<tr>
+
+<td>{{ row.id }}</td>
+<td>{{ row.username }}</td>
+<td style="max-width:300px;word-break:break-word;">{{ row.text }}</td>
+
+<td>
+
+{% if row.prediction == 'hate' %}
+<span class="prediction hate">Hate</span>
+
+{% elif row.prediction == 'offensive' %}
+<span class="prediction offensive">Offensive</span>
+
+{% else %}
+<span class="prediction normal">Normal</span>
+{% endif %}
+
+</td>
+
+<td>
+
+{% if row.admin_action == 'warned' %}
+<span class="warn">Warning Given</span>
+
+{% elif row.admin_action == 'blocked' %}
+<span class="block">Blocked</span>
+
+{% elif row.admin_action == 'pending' %}
+<span class="pending">Pending Review</span>
+
+{% else %}
+{{ row.admin_action }}
+
+{% endif %}
+
+</td>
+
+<td>
+
+<a class="delete-btn"
+href="/delete_history/{{ row.id }}"
+onclick="return confirm('Delete this history?')">
+
+<i class="bi bi-trash"></i> Delete
+
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+</body>
+</html>
