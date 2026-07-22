@@ -121,3 +121,39 @@ To access the administrative portal on your local machine, open your browser and
 3. Click check to view the real-time AI model categorization output (*Hate Speech*, *Offensive*, or *Neutral*).
 4. Review your previous system logging
 
+## Application Preview:
+
+Here is a preview of the live user interface executing real-time sentiment analysis predictions:
+
+#Home page:
+
+<img width="1872" height="892" alt="Screenshot 2026-07-23 000220" src="https://github.com/user-attachments/assets/3481d1ac-c755-4a24-8230-7edc6863aaf8" /><br>
+
+
+#Register page:
+<img width="1880" height="881" alt="image" src="https://github.com/user-attachments/assets/6c029027-e6fe-4e1b-a224-fb8f710af164" />
+
+
+
+#Login page:
+<img width="1895" height="897" alt="image" src="https://github.com/user-attachments/assets/8605423d-6d7e-490e-8a36-91e1c0492a8d" />
+
+
+
+#Hate speech prediction page:
+<img width="1872" height="871" alt="image" src="https://github.com/user-attachments/assets/4237c219-b0e6-4133-a7cb-a9020a6bd512" />
+
+
+
+#Admin login page:
+<img width="1867" height="911" alt="image" src="https://github.com/user-attachments/assets/e6785bdc-2a28-4ad5-b6bd-2773e11ed297" />
+
+
+
+#Admin dashboard page:
+<img width="1875" height="911" alt="image" src="https://github.com/user-attachments/assets/d2f7a99c-e734-46e2-96f0-51d9b8f95a89" />
+
+
+
+
+
